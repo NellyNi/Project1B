@@ -143,16 +143,20 @@ bool Lock::isHeldByCurrentThread() {
 // Your solution for Task 3
 // TODO
 
-Condition::Condition(char* debugName) { }
-Condition::~Condition() { }
+Condition::Condition(char* debugName) { 
+    name = debugName;
+    queue = new List;
+}
+Condition::~Condition() { 
+    delete queue;
+}
 void Condition::Wait(Lock* conditionLock) { 
     IntStatus oldLevel = interrupt->SetLevel(IntOff);	// disable interrupts
 
-    while (value == 0) { 			// semaphore not available
+    //while (value == 0) { 			// semaphore not available
         queue->Append((void *)currentThread);	// so go to sleep
         currentThread->Sleep();
-    }
-    value--; 					// semaphore available,
+    //}
     // consume its value
 
     (void) interrupt->SetLevel(oldLevel);	// re-enable interrupts
@@ -164,17 +168,16 @@ void Condition::Signal(Lock* conditionLock) {
     thread = (Thread *)queue->Remove();
     if (thread != NULL)	   // make thread ready, consuming the V immediately
         scheduler->ReadyToRun(thread);
-    value++;
     (void) interrupt->SetLevel(oldLevel);
 }
 void Condition::Broadcast(Lock* conditionLock) { 
     Thread *thread;
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
 
-    while(queue->next){
+    while(!(queue->IsEmpty())){
         thread = (Thread *)queue->Remove();
         scheduler->ReadyToRun(thread);
+        queue->Remove();
     }
-    value++;
     (void) interrupt->SetLevel(oldLevel);
 }
