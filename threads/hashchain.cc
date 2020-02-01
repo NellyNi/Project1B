@@ -54,6 +54,7 @@
 #define END_READ() rwlck[hash]->doneRead()
 #define START_WRITE() rwlck[hash]->startWrite()
 #define END_WRITE() rwlck[hash]->doneWrite()
+
 #else //else behave like NOLOCK (no option passed)
 #define START_READ() do{}while(0)
 #define END_READ() do{}while(0)
@@ -101,7 +102,6 @@ HashMap::HashMap() {
 
 #ifdef P1_SEMAPHORE
   //insert setup code here
-//#define SYNC_INIT 
   char *semname = "S"; 
   for (int i=0; i<HTABLE_SIZE; i++){ 
     sem[i]=new Semaphore(semname, 1); 
@@ -120,7 +120,6 @@ HashMap::HashMap() {
   for (int i=0; i<HTABLE_SIZE; i++){ 
     rwlck[i]=new RWLock(); 
   }
-  //rwlck = new RWLock[HTABLE_SIZE]();
 #endif
 }
 

@@ -9,14 +9,14 @@
 //TODO
 
 RWLock::RWLock(){ 
-    char *lckname = "L"; 
-    lck=new Lock(lckname); 
-    
     char *Rconname = "R"; 
     Rcondition=new Condition(Rconname); 
     
     char *Wconname = "W"; 
-    Wcondition=new Condition(Rconname); 
+    Wcondition=new Condition(Wconname); 
+        
+    char *lckname = "L"; 
+    lck=new Lock(lckname); 
     
     waitReadNumber = 0;
     readingNumber = 0;
@@ -25,9 +25,9 @@ RWLock::RWLock(){
 }
 
 RWLock::~RWLock(){ 
-    delete[] lck;
-    delete[] Rcondition;
-    delete[] Wcondition;
+    delete Rcondition;
+    delete Wcondition;
+    delete lck;
 }
 
 void RWLock::startRead(){ 
@@ -62,7 +62,7 @@ void RWLock::doneWrite(){
     lck->Acquire();
     writingNumber--;
     if(waitWriteNumber > 0){
-        Wcondition->Wait(lck);
+        Wcondition->Signal(lck);
     }
     else if(waitReadNumber > 0){
         Rcondition->Broadcast(lck);
@@ -71,14 +71,14 @@ void RWLock::doneWrite(){
 }
 
 bool RWLock::readShouldWait(){
-  if(writingNumber > 0 || waitWriteNumber > 0){
+  if((writingNumber + waitWriteNumber) > 0){
     return true;
   }
   return false;
 }
 
 bool RWLock::writeShouldWait(){
-  if(writingNumber > 0 || readingNumber > 0){
+  if((writingNumber + readingNumber) > 0){
     return true;
   }
   return false;
