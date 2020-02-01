@@ -1,0 +1,6 @@
+Group member: Jiawei Ni, Xinyi Li
+We write the code together.
+Taks 1: We revised hashchain.cc by replacing the TODOs in the define section based on the description in hashchain.h.
+Task 2: We implement functions in Lock based on lecture slides and logic in class Semaphore functions P() and V().
+Task 3: We implement functions in Condition based on the description in the hearder file and the logic in part 1a's RWlock file.
+The logic we use to replace the code in hashchain.cc is similar to the logic in part 1a's hashchain.cc.
