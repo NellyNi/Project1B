@@ -128,15 +128,15 @@ void Lock::Release() {
     if (thread != NULL)	  
         scheduler->ReadyToRun(thread);
     value++;
-    //}
+    
     (void) interrupt->SetLevel(oldLevel);
 }
 bool Lock::isHeldByCurrentThread() { 
-    // if (owner==currentThread){
-    //     return true;
-    // }else{
-    //     return false;
-    // }
+    if (owner==currentThread){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 // Your solution for Task 3

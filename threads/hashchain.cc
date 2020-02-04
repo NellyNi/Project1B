@@ -102,17 +102,17 @@ HashMap::HashMap() {
 
 #ifdef P1_SEMAPHORE
   //insert setup code here
-  char *semname = "S"; 
+  //char *semname = 'S'; 
   for (int i=0; i<HTABLE_SIZE; i++){ 
-    sem[i]=new Semaphore(semname, 1); 
+    sem[i]=new Semaphore(NULL, 1); 
   }
  
 #elif defined P1_LOCK
   //insert setup code here
 
-  char *lckname = "L"; 
+  //char *lckname = 'L'; 
   for (int i=0; i<HTABLE_SIZE; i++){ 
-    lck[i]=new Lock(lckname); 
+    lck[i]=new Lock(NULL); 
   }
  
 #elif defined P1_RWLOCK
@@ -237,11 +237,11 @@ HashMap:: ~HashMap() {
   }
   delete[] table;
   #ifdef P1_SEMAPHORE
-    delete[] sem;
+    delete[] *sem;
   #elif defined P1_LOCK
-    delete[] lck;
+    delete[] *lck;
   #elif defined P1_RWLOCK
-    delete[] rwlck;
+    delete[] *rwlck;
   #endif
 }
 
