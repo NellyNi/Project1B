@@ -9,13 +9,10 @@
 //TODO
 
 RWLock::RWLock(){ 
-    //char *Rconname = 'R\0'; 
     Rcondition=new Condition(NULL); 
     
-    //char *Wconname = 'W\0'; 
     Wcondition=new Condition(NULL); 
         
-    //char *lckname = 'L\0'; 
     lck=new Lock(NULL); 
     
     waitReadNumber = 0;

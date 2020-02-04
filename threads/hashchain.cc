@@ -102,15 +102,12 @@ HashMap::HashMap() {
 
 #ifdef P1_SEMAPHORE
   //insert setup code here
-  //char *semname = 'S'; 
   for (int i=0; i<HTABLE_SIZE; i++){ 
     sem[i]=new Semaphore(NULL, 1); 
   }
  
 #elif defined P1_LOCK
   //insert setup code here
-
-  //char *lckname = 'L'; 
   for (int i=0; i<HTABLE_SIZE; i++){ 
     lck[i]=new Lock(NULL); 
   }
