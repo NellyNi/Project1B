@@ -233,13 +233,6 @@ HashMap:: ~HashMap() {
     }
   }
   delete[] table;
-  #ifdef P1_SEMAPHORE
-    delete[] *sem;
-  #elif defined P1_LOCK
-    delete[] *lck;
-  #elif defined P1_RWLOCK
-    delete[] *rwlck;
-  #endif
 }
 
 
