@@ -43,7 +43,7 @@ void RWLock::startRead(){
 void RWLock::doneRead(){ 
     lck->Acquire();
     readingNumber--;
-    if(!readShouldWait()){
+    if(readingNumber==0 && waitWriteNumber>0){
         Wcondition->Signal(lck);
     }
     lck->Release();
